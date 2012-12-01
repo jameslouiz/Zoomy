@@ -24,3 +24,6 @@ Zoomy is a highly robust and configurable image zoom plugin. It was built from t
     <li>14 options</li>
     <li>HTML 5 Data attribute support for defining options per element</li>
 </ul>
+
+
+<a href="http://www.jameslouiz.com/experiment/zoomy/">For more information and demos</a>
