@@ -3,6 +3,7 @@ $ cat .gitignore
 
 # Can ignore specific files
 .DS_Store
+.gitignore
 
 # Use wildcards as well
 *~
