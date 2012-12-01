@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>Zoomy.js Documentation</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="@jameslouiz" name="author"><!-- Le styles -->
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <style type="text/css">
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    }
+    </style>
+    <!--<link href="assets/css/docs-responsive.css" rel="stylesheet">-->
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Le fav and touch icons -->
+</head>
+
+<body data-spy="scroll" id="top">
+    <!-- Documentation Navbar -->
+
+    <div class="navbar navbar-fixed-top navbar-inner container">
+        <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle=
+        "collapse"></a> <a class="brand" href="#">File Name</a> 
+        <!-- TIP: Change this for the name of your file -->
+
+        <div class="nav-collapse">
+            <ul class="nav">
+                <li><a class="active" href="#top">Back to Top</a></li>
+
+                <li><a href="#start">Getting Started</a></li>
+
+                <li><a href="#options">Options</a></li>
+
+                <li><a href="#examples">Examples</a></li>
+
+                <li><a href="#notes-contact">Notes - Contact</a></li>
+            </ul>
+        </div>
+    </div><!-- End of Navbar -->
+    <!-- Main Container Beginning -->
+
+    <div class="container">
+        <div class="masthead">
+            <h1>Zoomy.js Documentation</h1>
+
+            <p class="marketing-byline">Robust, Efficient, Cross Browser by
+            <a href="http://codecanyon.net/user/jameslouiz">jameslouiz</a></p>
+
+            <p>Super aweseome, robust and highly configureable image ZOOM
+            plugin.</p>
+
+            <p class="download-info"><a class="btn btn-primary btn-large" href=
+            "http://codecanyon.net/user/jameslouiz/">Contact Me</a></p>
+        </div><!-- masthead -->
+
+        <div id="intro">
+            <p class="highlight hero-unit">Thanks for purchasing Zoomy.js, it
+            means a lot! So, as a token of my gratitude, if there anything that
+            I have missed from this document or something your stuck with,
+            please feel free to email via my user page contact form <a href=
+            "http://codecanyon.net/user/jameslouiz/">here</a>. Thanks so
+            much!</p>
+        </div><!-- intro -->
+
+        <section id="start">
+            <div class="page-header">
+                <h1>Getting Started <small>Adding Zoomy to your
+                site</small></h1>
+            </div>
+
+            <p>Zoomy.js was built from the ground up with efficency and cross
+            browser compatibilty in mind. Zoomy.js is perfect for image
+            galleries that require that little bit extra to make the user
+            experiance more pleasant and intuitive or just a simgle image on a
+            page.</p>
+            <hr>
+
+            <div class="row">
+                <div class="span3">
+                    <h3>Markup</h3>
+
+                    <p>To get the ball rolling, you need very little
+                    markup.</p>
+
+                    <p>Its so simple, you don't even need to specify a large
+                    image for it to work. It will detect your set up and use
+                    the thumbnail instead.</p>
+                </div>
+
+                <div class="span9">
+                    <h4>Recommended</h4>
+                    <pre class="prettyprint linenums">
+&lt;div class="some-class" data-zoomed-image="/path/to/zoomed-image.jpg"&gt;
+  &lt;img src="/path/to/thumb.jpg" /&gt;
+&lt;/div&gt;
+</pre>
+
+                    <h4>Bare Minimum</h4>
+                    <pre class="prettyprint linenums">
+&lt;div class="some-class"&gt;
+  &lt;img src="/path/to/thumb.jpg"&gt;
+&lt;/div&gt;
+</pre>
+
+                    <div class="alert">
+                        <strong>Note!</strong> You should only use the bare
+                        minimum if you have a large image resized to a
+                        thumbnail size. Otherwise, it will look odd!
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span3">
+                    <h3>Javascript</h3>
+
+                    <p>Once you have the markup out for the way, setup is
+                    Easy!</p>
+                </div>
+
+                <div class="span9">
+                    <h4>Default</h4>
+                    <pre class="prettyprint linenums">
+$('.some-class').zoomy();
+</pre>
+
+                    <h4>With Options</h4>
+                    <pre class="prettyprint linenums">
+$('.some-class').zoomy({
+  option: 'property',
+  option: 'property'
+});
+</pre><a href="#options">More on options</a>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span3">
+                    <h3>Multiple Instances on the Same Page</h3>
+
+                    <p>Its likely that you will want to have more than one
+                    instance of Zoomy.js on one page, however this can present
+                    a few issues when each instance requires different options
+                    as they will get overwritten.</p>
+                </div>
+
+                <div class="span9">
+                    <h4>Good</h4>
+
+                    <p>Zoomy.js supports HTML data attributes, which means you
+                    can define options on the element itself in the markup.
+                    Also, from a performance perspective you no longer have the
+                    overhead of multiple calls to the same plugin. <a href=
+                    "#options">More on Data attributes</a></p>
+                    <pre class="prettyprint linenums">
+// ­se a class as a hook for all your elements
+$('.zoomed').zoomy({
+  innerZoom: true, // You can still set global options here, then override existing or add more to the element
+  lensHeight: 100,
+  lensWidth: 120
+});
+ 
+// Using data attributes to store the options
+&lt;div class="zoomed" data-zoomed-image="/path/to/zoomed-image.jpg" data-inner-zoom="false"&gt;
+  &lt;img src="/path/to/thumbnail.jpg" /&gt;
+&lt;/div&gt;
+</pre>
+
+                    <h4>Bad</h4>
+
+                    <p>Instaniating the plugin on multiple selectors is not
+                    recommended and will increase page load times!</p>
+                    <pre class="prettyprint linenums">
+// First Object with its own properties
+$('#zoomed-1').zoomy({
+  innerZoom: true,
+  lensHeight: 100,
+  lensWidth: 120
+});
+   
+// Second Object with its own properties
+$('#zoomed-2').zoomy({
+  popover: {
+    width: 400,
+    height: 200
+  }
+});
+</pre>
+                </div>
+            </div>
+            <hr>
+        </section><!-- markup -->
+
+        <section id="options">
+            <div class="page-header">
+                <h1>Options <small>Customize the look and functionality with
+                options</small></h1>
+            </div>
+
+            <div class="row span12">
+                <h2 class="h3">Zoomy API</h3>
+
+                <p>Zoomy is highly configurable, here is a list of the options
+                you can customize:</p>
+
+                <table class="table table-bordered table-striped small">
+                    <thead>
+                        <tr>
+                            <th>Option</th>
+
+                            <th>Description</th>
+
+                            <th>HTML5 Data</th>
+
+                            <th>Values</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><code>popover className</code></td>
+
+                            <td>Customise the class name of the popover</td>
+
+                            <td>Not available</td>
+
+                            <td>Any valid selector</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>popoverHeight</code></td>
+
+                            <td>Height of the popover</td>
+
+                            <td><code>data-popover-height</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>popoverWidth</code></td>
+
+                            <td>Width of the popover</td>
+
+                            <td><code>data-popover-width</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>popoverPosition</code></td>
+
+                            <td>Position of the popover relative to the
+                            element</td>
+
+                            <td><code>data-popover-position</code></td>
+
+                            <td>'top', 'left', 'bottom', 'right'</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>popoverOffsetX</code></td>
+
+                            <td>Horizontal offset of the popover</td>
+
+                            <td><code>data-offset-x</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>popoverOffsetY</code></td>
+
+                            <td>Vertical offset of the popover</td>
+
+                            <td><code>data-offset-y</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>lensHeight</code></td>
+
+                            <td>Height of the lens (used only when inner zoom
+                            enabled)</td>
+
+                            <td><code>data-lens-height</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>lensWidth</code></td>
+
+                            <td>Width of the lens (used only when inner zoom
+                            enabled)</td>
+
+                            <td><code>data-lens-width</code></td>
+
+                            <td>Any number value</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>magnify</code></td>
+
+                            <td>Level of magnification on large image</td>
+
+                            <td><code>data-magnify</code></td>
+
+                            <td>Any number value<br>
+                            (less than 1 to zoom out)</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>triggerEvent</code></td>
+
+                            <td>The event in to trigger the zoom state</td>
+
+                            <td><code>data-trigger-event</code></td>
+
+                            <td>'hover', 'click'</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>innerZoom</code></td>
+
+                            <td>Show the zoomed image in the lens instead of
+                            popover</td>
+
+                            <td><code>data-inner-zoom</code></td>
+
+                            <td>true, false</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>preload</code></td>
+
+                            <td>Preloads the large images on page load</td>
+
+                            <td><code>data-preload</code></td>
+
+                            <td>true, false</td>
+                        </tr>
+
+                        <tr>
+                            <td><code>duration</code></td>
+
+                            <td>Duration for the transition events in
+                            milliseconds</td>
+
+                            <td><code>data-duration</code></td>
+
+                            <td>Any number value.<br>
+                            Higher value = slower</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span3">
+                    <h3>Defaults</h3>
+
+                    <div class="alert alert-wraning">
+                        <strong>Note!</strong> On options where there is no value specified, the value is pre calculated
+                    </div>
+                </div>
+
+                <div class="span9">
+                    <pre class="prettyprint linenums">
+defaults = {
+    popover: {
+        className: 'popover',
+    },
+    popoverHeight: , // Thumbnail height * 1.5
+    popoverWidth: , // Thumbnail width * 1.5,
+    popoverPosition: 'right',
+    popoverOffsetX: 40,
+    popoverOffsetY: 0,
+    lensHeight: , // Thumbnail height / 1.5
+    lensWidth: , // Thumbnail width / 1.5
+    magnify: 1,
+    triggerEvent: 'hover',
+    innerZoom: false,
+    preload: true,
+    showPreloader: true,
+    duration: 100,
+}
+                    
+</pre>
+                </div>
+            </div>
+        </section><!-- options -->
+
+        <section id="examples">
+            <div class="page-header">
+                <h1>Examples <small>Configuration possibilities</small></h1>
+            </div>
+
+            <div class="row">
+                <div class="span4">
+                    <a class="thumbnail zoom" data-zoomed-image="assets/img/zoom-large-4.jpg"><img src="assets/img/zoom-small-4.jpg"></a>
+                </div>
+
+                <div class="span8">
+                    <h2>Default Configuration</h2>
+
+                    <p>Zoomy.js will work straight out of the box. All you need
+                    is a div with an image in it. Simply instantiate the plugin
+                    on the containing div.</p>
+
+                    <p>By default, the object will preload and use a popover to
+                    display the large image among an array of other
+                    defaults.</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy();
+</pre>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span4">
+                    <a class="thumbnail zoom" data-inner-zoom="true" data-lens-height="60" data-lens-width="100" data-zoomed-image="assets/img/zoom-large-4.jpg">
+                        <img src="assets/img/zoom-small-4.jpg">
+                    </a>
+                </div>
+
+                <div class="span8">
+                    <h2>Inner Zoom</h2>
+
+                    <p>Instead of having a popover, you can use the lens to
+                    accomodate the zoomed image so it acts like a magnifiing
+                    glass. By default, the size of the lens is 1.5x smaller
+                    than the thumbnail, but this can be overwritten to anything
+                    you want. The larger it is the less movable it is.</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy({
+  innerZoom: true,
+  lensHeight: 60,
+  lensWidth: 100
+});
+</pre>
+                </div>
+            </div>
+            <hr>
+            <!--<div class="row">
+        <div class="span4">
+          <div class="thumbnail thumb-2" data-magnify="1" data-zoomed-image="/assets/img/zoom-large-5.jpg" data-magnify="2">
+            <img src="/assets/img/zoom-small-5.jpg" >
+          </div>
+        </div>
+        <div class="span8">
+          <h2>Magnify</h2>
+          <p>Achieve an even greater level of zoom by using the magnifiy property by specifiy how much you want to increase the image size by</p>
+          <p>You can even zoom out the image by using numbers less than 1. Using 0.5 would reduce the image by 50%</p>
+          <p>This can work particularly well when not specifying a large image using 'data-zoomed-image'.</p>
+<pre class="prettyprint linenums">
+$('div').zoomy({
+  magnify: 2
+});
+</pre>
+        </div>
+      </div>-->
+
+            <div class="row">
+                <div class="span4 thumbnail zoom" data-magnify="4"
+                data-zoomed-image="assets/img/zoom-large-4.jpg"><img src=
+                "assets/img/zoom-small-4.jpg"></div>
+
+                <div class="span8">
+                    <h2>Magnify</h2>
+
+                    <p>Achieve an even greater level of zoom by using the
+                    magnifiy property by specifiy how much you want to increase
+                    the image size by</p>
+
+                    <p>You can even zoom out the image by using numbers less
+                    than 1. Using 0.5 would reduce the image by 50%</p>
+
+                    <p>This can work particularly well when not specifying a
+                    large image using 'data-zoomed-image'.</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy({
+  magnify: 2
+});
+</pre>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span4 thumbnail zoom"><img src=
+                "assets/img/zoom-large-4.jpg"></div>
+
+                <div class="span8">
+                    <h2>No Large Image Specified - Use Self</h2>
+
+                    <p>Zoomy.js will detect if a large image is specified or
+                    not. If not then it will use the thumbnail. This can be
+                    handy if your thumbnail is just a large image resized with
+                    css.</p>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span6">
+                    <h2>Inner Zoom with custom Lens Size</h2>
+
+                    <div class="thumbnail">
+                        <div class="zoom" data-inner-zoom="true"
+                        data-lens-height="100" data-lens-width="150"
+                        data-zoomed-image="assets/img/zoom-large-6.jpg">
+                        <img src="assets/img/zoom-small-6.jpg"></div>
+                        <!--<div class="thumb-info">
+              <h5>Inner Zoom</h5>
+              <p>Inner zoom with custom lens size. Perfect for showing inticate details.</p>
+            </div>-->
+                    </div>
+                </div>
+
+                <div class="span6">
+                    <h2>Custom Popover size</h2>
+
+                    <div class="thumbnail">
+                        <div class="zoom" data-popover-height="630"
+                        data-popover-position="left" data-popover-width="450"
+                        data-zoomed-image="assets/img/zoom-large-6.jpg">
+                        <img src="assets/img/zoom-small-6.jpg"></div>
+                        <!--<div class="thumb-info">
+              <h5>Inner Zoom</h5>
+              <p>Inner zoom with custom lens size. Perfect for showing inticate details.</p>
+            </div>-->
+                    </div>
+                </div>
+
+                <div class="span6"></div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span4 thumbnail zoom" data-popover-height="630"
+                data-popover-offset-x="0" data-popover-offset-y="50"
+                data-popover-position="top" data-popover-width="940"
+                data-zoomed-image="assets/img/zoom-large-10.jpg"><img src=
+                "assets/img/zoom-small-10.jpg"></div>
+
+                <div class="span8">
+                    <h2>Combination of Popover Offset and Size</h2>
+
+                    <p>By using these to properties you can place the popover
+                    anywhere on the page relative to the thumbnail</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy({
+  popoverOffsetX: 0,
+  popoverOffsetY: 50,
+  popoverPosition: top,
+  popoverWidth: 940,
+  popoverHeight: 630
+});
+</pre>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span4 thumbnail zoom" data-trigger-event="click"
+                data-zoomed-image="assets/img/zoom-large-4.jpg"><img src=
+                "assets/img/zoom-small-4.jpg"></div>
+
+                <div class="span8">
+                    <h2>Trigger Event - Click</h2>
+
+                    <p>Active the zoom by clicking on the image</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy({
+  triggerEvent: 'click'
+});
+</pre>
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="span4 thumbnail zoom" data-duration="500"
+                data-zoomed-image="assets/img/zoom-large-4.jpg"><img src=
+                "assets/img/zoom-small-4.jpg"></div>
+
+                <div class="span8">
+                    <h2>Fade Duration</h2>
+
+                    <p>Set the fade duration to be as quick or as long as you
+                    want</p>
+                    <pre class="prettyprint linenums">
+$('.zoom').zoomy({
+  duration: 500
+});
+</pre>
+                </div>
+            </div>
+        </section><!-- JavaScript -->
+
+        <section id="notes-contact">
+            <div class="page-header">
+                <h1>Notes &amp; Tips <small>Just a few tips to help
+                out</small></h1>
+            </div>
+
+            <ul>
+                <li>Make sure the <code>img</code> in thumbnail and popover DO
+                NOT have <code>max-width: 100%</code> (Acts weird in older
+                browsers)</li>
+
+                <li>Do not give the popover any padding</li>
+
+                <li>Don's use excessive border on the lens or padding or
+                margin</li>
+
+                <li>Make sure you dont have any other elemens on the page with
+                the same name as the lens, popover</li>
+
+                <li>If relying on the 'use self' option, you need to make sure
+                you resize it with css or by adding the height and width
+                attributes to the image itself</li>
+            </ul>
+
+            <p>If you have found a bug, please do not hesitiate to <a href=
+            "http://codecanyon.net/user/jameslouiz/">contact me</a> and I will
+            gladly look into it!</p>
+        </section><!-- Credits -->
+
+        <footer>
+            <p>© Jameslouiz 2012</p>
+        </footer>
+    </div><!-- /container --><!-- Le javascript
+    ================================================== -->
+<!-- Placed at the end of the document so the pages load faster --><script src="assets/js/jquery.js"></script><script src="assets/js/jquery-zoomy-1.0.js"></script><script src="assets/js/scripts.js"></script><script src="assets/js/google-code-prettify/prettify.js"></script>
+</body>
+</html>
