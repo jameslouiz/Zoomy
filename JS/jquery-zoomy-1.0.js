@@ -41,9 +41,7 @@
 
                 //default configuration
                 defaults = {
-                    popover: {
-                        className: 'popover'
-                    },
+                    popoverClassName: 'popover',
                     popoverHeight: $(e).find('img').height() * 1.5,
                     popoverWidth: $(e).find('img').width() * 1.5,
                     popoverPosition: 'right',
@@ -69,8 +67,8 @@
 
             //Setup Vars 
             this.body = $('html body');
-            this.popoverHtml = '<div class=' + this.settings.popover.className + '><img class=' + this.settings.popover.className + '_image' + ' src="" /></div>';
-            this.sandboxHtml = '<div class=' + this.settings.popover.className + '_sandbox' + '></div>';
+            this.popoverHtml = '<div class=' + this.settings.popoverClassName + '><img class=' + this.settings.popoverClassName + '_image' + ' src="" /></div>';
+            this.sandboxHtml = '<div class=' + this.settings.popoverClassName + '_sandbox' + '></div>';
             this.lensHtml = '<div class="lens"></div>';
             this.preloaderHtml = '<div class="preloader"></div>';
             this.thumb = this.e.find('img');
@@ -90,8 +88,8 @@
 
             //Setup vars of newly injected elements
             this.lens = this.e.find('.lens');
-            this.popover = $('.' + this.settings.popover.className);
-            this.sandbox = $('.' + this.settings.popover.className + '_sandbox');
+            this.popover = $('.' + this.settings.popoverClassName);
+            this.sandbox = $('.' + this.settings.popoverClassName + '_sandbox');
             this.preloader = this.e.find('.preloader');
 
             //Add CSS to the elements
@@ -180,11 +178,11 @@
             this.e.append(this.lensHtml);
             this.e.append(this.preloaderHtml);
             //inject Popover only once
-            if ($("." + this.settings.popover.className).length < 1) {
+            if ($("." + this.settings.popoverClassName).length < 1) {
                 this.body.append(this.popoverHtml); //change container back to this.body
             }
             // inject sandbox only once
-            if ($('.' + this.settings.popover.className + '_sandbox').length < 1) {
+            if ($('.' + this.settings.popoverClassName + '_sandbox').length < 1) {
                 this.body.append(this.sandboxHtml); //change container back to this.body
             }
         },

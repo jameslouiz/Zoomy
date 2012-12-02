@@ -36,14 +36,10 @@
         init: function (e, config) {
             this.e = $(e);
 
-            var zoomy = this, //reference to object
-            
-
-                //default configuration
-                defaults = {
-                    popover: {
-                        className: 'popover'
-                    },
+            //reference to object
+            var zoomy = this,
+                defaults = { //default configuration
+                    popoverClassName: 'popover',
                     popoverHeight: $(e).find('img').height() * 1.5,
                     popoverWidth: $(e).find('img').width() * 1.5,
                     popoverPosition: 'right',
@@ -56,12 +52,16 @@
                     innerZoom: false,
                     preload: true,
                     showPreloader: true,
-                    duration: 200
+                    duration: 200,
+                    callbacks: {
+                        zoomedFail: false,
+                        zoomedSuccess: false
+                    }
                 };
 
             this.dataOptions = this.e.data();
 
-            if (typeof this.dataOptions == 'object' && !$.isEmptyObject(this.dataOptions)) {
+            if (typeof this.dataOptions === 'object' && !$.isEmptyObject(this.dataOptions)) {
                 this.settings = $.extend(true, defaults, this.dataOptions);
             } else {
                 this.settings = $.extend(true, defaults, config);
@@ -69,8 +69,8 @@
 
             //Setup Vars 
             this.body = $('html body');
-            this.popoverHtml = '<div class=' + this.settings.popover.className + '><img class=' + this.settings.popover.className + '_image' + ' src="" /></div>';
-            this.sandboxHtml = '<div class=' + this.settings.popover.className + '_sandbox' + '></div>';
+            this.popoverHtml = '<div class=' + this.settings.popoverClassName + '><img class=' + this.settings.popoverClassName + '_image' + ' src="" /></div>';
+            this.sandboxHtml = '<div class=' + this.settings.popoverClassName + '_sandbox' + '></div>';
             this.lensHtml = '<div class="lens"></div>';
             this.preloaderHtml = '<div class="preloader"></div>';
             this.thumb = this.e.find('img');
@@ -90,8 +90,8 @@
 
             //Setup vars of newly injected elements
             this.lens = this.e.find('.lens');
-            this.popover = $('.' + this.settings.popover.className);
-            this.sandbox = $('.' + this.settings.popover.className + '_sandbox');
+            this.popover = $('.' + this.settings.popoverClassName);
+            this.sandbox = $('.' + this.settings.popoverClassName + '_sandbox');
             this.preloader = this.e.find('.preloader');
 
             //Add CSS to the elements
@@ -121,7 +121,7 @@
 
             this.lens.find('img').css({
                 position: 'relative'
-            });          
+            });
 
             this.sandbox.css({
                 height: 1,
@@ -148,7 +148,6 @@
                 padding: 0,
                 position: 'absolute'
             });
-        
 
             //Makes the zoomed image source unique incase you want multipul instances of the same
             //image on the page but with different zoom levels or other options specified.
@@ -167,24 +166,30 @@
             this.zoomedImageSource = this.e.attr('data-zoomed-image');
 
             if (this.thumb.attr('data-status') !== 'error') {
-                if (this.settings.preload) {            
-                    this.loadImages();          
+                if (this.settings.preload) {
+                    this.loadImages();
                 } else {
                     this.eventBindings();
                 }
             }
         },
+        // Calls specific hooks
+        callHook: function (hook) {
+            if ($.isFunction(this.settings.callbacks[hook])) {
+                this.settings.callbacks[hook](this);
+            }
+        },
         // Inject Elements
-        inject: function () 
-        {
+        inject: function () {
+
             this.e.append(this.lensHtml);
             this.e.append(this.preloaderHtml);
             //inject Popover only once
-            if ($("." + this.settings.popover.className).length < 1) {
+            if ($("." + this.settings.popoverClassName).length < 1) {
                 this.body.append(this.popoverHtml); //change container back to this.body
             }
             // inject sandbox only once
-            if ($('.' + this.settings.popover.className + '_sandbox').length < 1) {
+            if ($('.' + this.settings.popoverClassName + '_sandbox').length < 1) {
                 this.body.append(this.sandboxHtml); //change container back to this.body
             }
         },
@@ -193,8 +198,7 @@
          *  loadImages - loads the zoomed images and appends to sandbox
          *
          */
-        loadImages: function () 
-        {
+        loadImages: function () {
             var self = this,
                 element = this.e,
                 thumb = this.thumb,
@@ -204,28 +208,24 @@
                 loaded = this.thumb.data('loaded'),
                 sandboxZoomedImageSource = this.sandbox.find('img').attr('src'),
                 img = new Image();
-
-            
             if (!loaded && zoomedImageSource) {
 
                 if (this.settings.showPreloader) {
                     preloader.fadeIn(200);
                 }
+                $(img).load(function () {
+                    var thisImg = $(this), platform;                 
+                    self.injectImages(thisImg);    
+                    self.callHook('zoomedSuccess');     
 
-
-                    $(img).load(function () {
-                        var thisImg = $(this),
-                            platform;                   
-
-                        self.injectImages(thisImg);         
-
-                    }).attr({
-                        src: zoomedImageSource
-                    }).error(function () {
-                        thumb.data('loaded', 'failed');
-                        // Callbacks for when elements shown
-                        self.callHook('loadFail');
-                    });
+                }).attr({
+                    src: zoomedImageSource
+                }).error(function () {
+                    thumb.data('loaded', 'failed');
+                    // Callbacks for when elements shown
+                    preloader.fadeOut(200);
+                    self.callHook('zoomedFail');
+                });
 
             } else {
                 this.grabData();
@@ -237,14 +237,12 @@
          * FetchImage - Gets the image from the sandbox and puts it in the popover
          *
          */
-        grabData: function() 
-        {
+        grabData: function () {
 
             var zoomedImageSource = this.zoomedImageSource,
                 zoomedImage = this.sandbox.find('img[src="'+zoomedImageSource+'"]'),
                 el, source;
             
-
             this.lens.hide();
 
             if (this.useSelf) {
@@ -265,19 +263,14 @@
                 }
             }
 
-              
-            //this.lensSize(this.sandbox.find('img[src="'+source+'"]')); //set size of lens for this thumb
-
             this.showElems();
-
         },
         /**
          *
          * Event Bindings - Bind all the mouse vents to elements
          *
          */
-        eventBindings: function () 
-        {
+        eventBindings: function () {
             var self = this,
                 elem = this.e,
                 popover = this.popover,
@@ -303,8 +296,6 @@
                     self.loadImages();
                 }
 
-
-                 
                 $('body').on('mousemove.zoomy', lens, function (e) {
                     self.lensPos(e);
                 }); 
@@ -323,8 +314,7 @@
          * @param append - DOM Object you want to append to the lens or popover
          * 
          */
-        injectImages: function(append)
-        {   
+        injectImages: function (append) {   
 
             var loaded = this.thumb.data('loaded'),
                 platform, freshImage;
@@ -377,24 +367,9 @@
                 lensHeight = this.lensHeight;
                 lensWidth = this.lensWidth;
             } else {
-                //lensHeight1 = (popoverHeight / (zoomedImage.height() / thumbHeight)) ;
-                //lensWidth1 = (popoverWidth / (zoomedImage.width() / thumbWidth)) ;
-                
-                //ey = thumbHeight / lensHeight1;
-                //ex = thumbWidth / lensWidth1;
-
-                //console.log(ey);
-
-                //lensHeight = thumbHeight / ( (zoomedImage.height()+ey) / popoverHeight); //lensHeight + (lensHeight / 100 * 3.5);
-                //lensWidth = thumbWidth / ( (zoomedImage.width()+ex) / popoverWidth) ; //lensWidth + (lensWidth / 100 * 3.5);
-                
                 lensHeight = popoverHeight / (zoomedImage.height() / thumbHeight);
                 lensWidth = popoverWidth / (zoomedImage.width() / thumbWidth);
             }  
-
-
-           
-            //console.log(lensHeight);
 
             lensDims = {
                 height: lensHeight + 0,
@@ -410,8 +385,7 @@
          * @param e - event
          *
          */
-        lensPos: function (e) 
-        {
+        lensPos: function (e) {
             var self = this,
                 lens = this.lens,
                 thumb = this.thumb,
@@ -471,8 +445,7 @@
          * Popover Position - Sets the position of popover on mouse move
          *
          */
-        popoverPos: function () 
-        {   
+        popoverPos: function () {   
 
             if (!this.settings.innerZoom){
                 var self = this,
@@ -528,8 +501,7 @@
          * Sets the position of the zoomed image in the popover in relation to the lens
          *
          */
-        zoomedPosition: function () 
-        {
+        zoomedPosition: function () {
 
             var el = this.settings.innerZoom ? this.lens.find('img') : this.popover.find('img'),
                 thumb = this.thumb,
@@ -568,8 +540,7 @@
          * @param img DOM Object - The image you want to magnify
          *
          */
-        magnify: function(img)
-        {
+        magnify: function (img) {
             var imgHeight = img.height(),
                 imgWidth = img.width(),
                 magnify = this.settings.magnify;
@@ -589,8 +560,7 @@
          * showElems - Shows the popover and lens when required. Popover doesnt show if innerZoom is enabled
          *
          */
-        showElems: function()
-        {   
+        showElems: function () {   
             
  
             if (!this.settings.innerZoom) {
@@ -610,8 +580,7 @@
          * hideElems - Hides the popover and lens when required.
          *
          */
-        hideElems: function()
-        {
+        hideElems: function () {
 
             if ( this.popover.is(':visible') || (this.popover.is(':hidden') && this.popover.is(':animated')) ) {
                 this.popover.stop().fadeOut(this.settings.duration);
@@ -665,7 +634,7 @@
                     elems.unbind('load.imgloaded');
                     runIt();
                 }
-            }).each(function(){
+            }).each(function (){
                 var curSrc = $(this).attr('src');
                 // cached images don't fire load sometimes, so we reset src.
                 if (this.complete || this.complete === undefined){
@@ -674,7 +643,7 @@
                     this.src = src;
                 }
 
-                $(this).error(function()
+                $(this).error(function ()
                 {
                     $(this).attr('data-status', 'error');
                     this.src = error;
@@ -682,13 +651,10 @@
                     src: this.src
                 });
 
-
             }); 
         } else {
             runIt();
         }
-
-        
     };
 
 
