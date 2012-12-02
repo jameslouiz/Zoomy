@@ -19,3 +19,7 @@
   border-radius: 5px;
   border: 1px solid #888;
 }
+
+.popover_sandbox img, .popover img {
+  max-width: none;
+}
