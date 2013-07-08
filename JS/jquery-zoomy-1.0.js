@@ -627,7 +627,8 @@
     $.fn.zoomy = function (config) {
         
         var el = this,
-            $el = $(this);
+            $el = $(this),
+            msie = (!document.documentMode || document.documentMode < 9) && window.attachEvent && !window.addEventListener; // IE < 9
 
         function runIt()
         {
@@ -651,7 +652,7 @@
         }
         
 
-        if (!$.browser.msie){
+        if (!msie){
 
             var elems = el.find('img'),
                 len = elems.length,
