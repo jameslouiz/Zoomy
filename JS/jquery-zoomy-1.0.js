@@ -59,10 +59,11 @@
 
             this.dataOptions = this.e.data();
 
-            if (typeof this.dataOptions == 'object' && !$.isEmptyObject(this.dataOptions)) {
-                this.settings = $.extend(true, defaults, this.dataOptions);
-            } else {
+            if (config){
                 this.settings = $.extend(true, defaults, config);
+            }
+            if (typeof this.dataOptions == 'object' && !$.isEmptyObject(this.dataOptions)) {
+                this.settings = $.extend(true, this.settings, this.dataOptions);
             }
 
             //Setup Vars 
