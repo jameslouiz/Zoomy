@@ -600,6 +600,10 @@
             }
 
             // if ( this.lens.is(':hidden') || this.lens.css('opacity') < 1 || (this.lens.is(':visible') && this.lens.is(':animated')) ) {
+            	//if thumbnail was hidden on init we need to update the lens size
+                if ('0px' == this.lens.css('width')){
+                  this.lensSize(this.sandbox.find('img[src="'+this.zoomedImageSource+'"]'));
+                }
                 this.lens.stop(true, true).fadeTo(this.settings.duration, 1);
             //}
 
