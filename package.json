@@ -1,0 +1,36 @@
+{
+    "name": "Zoomy",
+    "title": "jQuery Image Zoom Plugin",
+    "description": "Simple, light weight and robust image zoom plugin",
+    "version": "2.0.0",
+    "homepage": "http://www.jameslouiz.com/experiment/zoomy/",
+    "author": {
+        "name": "James Thomoson - @jameslouiz",
+        "email": "james.tommo@yahoo.co.uk",
+        "url": "http://jameslouiz.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jameslouiz/zoomy.git"
+    },
+    "bugs": {
+        "url": "https://github.com/jameslouiz/zoomy/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://www.opensource.org/licenses/MIT"
+        }
+    ],
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "0.4.x",
+        "grunt-contrib-uglify": "~0.1.1"
+    },
+    "keywords": [
+        "zoomy",
+        "images",
+        "image zoom"
+    ]
+}
+

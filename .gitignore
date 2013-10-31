@@ -1,13 +1,38 @@
-
-$ cat .gitignore
-
-# Can ignore specific files
-.DS_Store
-.gitignore
-
-# Use wildcards as well
-*~
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
 *.swp
+*.vi
+*~
+*.sass-cache
 
-# Can also ignore all directories and files in a directory.
-tmp/**/* 
+# OS or Editor folders
+.DS_Store
+Thumbs.db
+.cache
+.project
+.settings
+.tmproj
+*.esproj
+nbproject
+
+# Dreamweaver added files
+_notes
+dwsync.xml
+
+# Komodo
+*.komodoproject
+.komodotools
+
+# Folders to ignore
+.hg
+.svn
+.CVS
+intermediate
+publish
+.idea
+node_modules
